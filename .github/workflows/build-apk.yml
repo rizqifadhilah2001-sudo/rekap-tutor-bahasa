@@ -25,13 +25,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install Dependencies & Add Android Platform
         run: |
           npm install
-          npx cap add android || npx cap sync android
+          npx cap add android
 
       - name: Build Debug APK
         working-directory: ./android
@@ -51,8 +48,10 @@ jobs:
 
       - name: Create GitHub Release with APK
         uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: "Rekap Tutor Bahasa APK v1.0.${{ github.run_number }}"
           files: ./Rekap-Tutor-Bahasa.apk
           generate_release_notes: false
+        continue-on-error: true
