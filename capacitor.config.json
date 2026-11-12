@@ -1,0 +1,6 @@
+{
+  "appId": "com.rizqi.rekaptutor",
+  "appName": "Rekap Tutor",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
