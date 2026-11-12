@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#4f46e5" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Rekap Mengajar - Tutor Bahasa</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-logo">A文</div>
+          <div>
+            <h1 class="brand-title">Rekap Tutor</h1>
+            <p class="brand-subtitle" id="currentDateText">Jurnal & Honor Mengajar Bahasa</p>
+          </div>
+        </div>
+        <button class="icon-btn" id="btnSettings" title="Backup / Pengaturan Data" aria-label="Pengaturan Data">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Month Filter Selector -->
+      <div class="month-bar">
+        <button class="month-nav-btn" id="prevMonthBtn" aria-label="Bulan Sebelumnya">&#8249;</button>
+        <div class="month-label" id="activeMonthLabel">November 2026</div>
+        <button class="month-nav-btn" id="nextMonthBtn" aria-label="Bulan Berikutnya">&#8250;</button>
+      </div>
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main class="app-content">
+      <!-- TAB 1: BERANDA / RINGKASAN -->
+      <section class="tab-view active" id="view-dashboard">
+        <div class="hero-card">
+          <div class="hero-top">
+            <div>
+              <span class="hero-caption">Total Honor Bulan Ini</span>
+              <h2 class="hero-amount" id="statTotalFee">Rp 0</h2>
+            </div>
+            <span class="badge-pill" id="statSessionsCount">0 Sesi</span>
+          </div>
+          <div class="hero-split">
+            <div class="split-item paid">
+              <span class="split-dot"></span>
+              <div>
+                <small>Sudah Lunas</small>
+                <strong id="statPaidFee">Rp 0</strong>
+              </div>
+            </div>
+            <div class="split-item unpaid">
+              <span class="split-dot"></span>
+              <div>
+                <small>Belum Dibayar</small>
+                <strong id="statUnpaidFee">Rp 0</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="mini-stat-card">
+            <span class="mini-icon">⏱️</span>
+            <div>
+              <strong id="statTotalHours">0 Jam</strong>
+              <small>Total Durasi</small>
+            </div>
+          </div>
+          <div class="mini-stat-card">
+            <span class="mini-icon">👩‍🎓</span>
+            <div>
+              <strong id="statActiveStudents">0 Murid</strong>
+              <small>Terdaftar</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="btn-primary-action" id="btnQuickAddSession">
+            <span>＋ Catat Sesi Mengajar</span>
+          </button>
+          <button class="btn-secondary-action" id="btnQuickAddStudent">
+            <span>＋ Murid Baru</span>
+          </button>
+        </div>
+
+        <div class="section-header">
+          <h3>Sesi Mengajar Terbaru</h3>
+          <button class="link-btn" data-goto="sessions">Lihat Semua</button>
+        </div>
+        <div id="recentSessionsList" class="card-list"></div>
+      </section>
+
+      <!-- TAB 2: SESI MENGAJAR -->
+      <section class="tab-view" id="view-sessions">
+        <div class="toolbar">
+          <div class="filter-chips" id="sessionStatusFilter">
+            <button class="chip active" data-filter="all">Semua</button>
+            <button class="chip" data-filter="unpaid">Belum Dibayar</button>
+            <button class="chip" data-filter="paid">Sudah Lunas</button>
+          </div>
+          <select id="sessionStudentFilter" class="select-compact">
+            <option value="all">Semua Murid</option>
+          </select>
+        </div>
+        <div id="allSessionsList" class="card-list"></div>
+      </section>
+
+      <!-- TAB 3: DAFTAR MURID -->
+      <section class="tab-view" id="view-students">
+        <div class="toolbar">
+          <input type="search" id="studentSearchInput" class="search-input" placeholder="Cari nama murid atau bahasa..." />
+          <button class="btn-add-inline" id="btnAddStudentTop">＋ Murid</button>
+        </div>
+        <div id="studentsList" class="card-list"></div>
+      </section>
+
+      <!-- TAB 4: REKAP HONOR & PEMBAYARAN -->
+      <section class="tab-view" id="view-finance">
+        <div class="finance-banner">
+          <div>
+            <h3>Rekap Honor per Murid</h3>
+            <p>Klik tombol WA / Salin untuk kirim rekap tagihan mengajar ke murid atau wali murid.</p>
+          </div>
+        </div>
+        <div id="financeStudentList" class="card-list"></div>
+      </section>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="fabAddSession" title="Catat Sesi Mengajar" aria-label="Catat Sesi Mengajar">＋</button>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-tab="dashboard">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="9" rx="1"/>
+          <rect x="14" y="3" width="7" height="5" rx="1"/>
+          <rect x="14" y="12" width="7" height="9" rx="1"/>
+          <rect x="3" y="16" width="7" height="5" rx="1"/>
+        </svg>
+        <span>Beranda</span>
+      </button>
+      <button class="nav-item" data-tab="sessions">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+        </svg>
+        <span>Sesi</span>
+      </button>
+      <button class="nav-item" data-tab="students">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Murid</span>
+      </button>
+      <button class="nav-item" data-tab="finance">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="5" width="20" height="14" rx="2"/>
+          <line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+        <span>Honor</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- MODAL: CATAT / EDIT SESI MENGAJAR -->
+  <div class="modal-backdrop" id="modalSession">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 id="modalSessionTitle">Catat Sesi Mengajar</h3>
+        <button class="close-btn" data-close="modalSession">&times;</button>
+      </div>
+      <form id="formSession">
+        <input type="hidden" id="sessionId" />
+        <div class="form-group">
+          <label for="sessionStudentId">Pilih Murid *</label>
+          <select id="sessionStudentId" required></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sessionDate">Tanggal *</label>
+            <input type="date" id="sessionDate" required />
+          </div>
+          <div class="form-group">
+            <label for="sessionDuration">Durasi (Menit) *</label>
+            <select id="sessionDuration" required>
+              <option value="30">30 Menit (0.5 Jam)</option>
+              <option value="45">45 Menit</option>
+              <option value="60" selected>60 Menit (1 Jam)</option>
+              <option value="90">90 Menit (1.5 Jam)</option>
+              <option value="120">120 Menit (2 Jam)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sessionFee">Honor Sesi Ini (Rp) *</label>
+            <input type="number" id="sessionFee" min="0" step="1000" placeholder="100000" required />
+          </div>
+          <div class="form-group">
+            <label for="sessionPaid">Status Bayar</label>
+            <select id="sessionPaid">
+              <option value="false">Belum Dibayar</option>
+              <option value="true">Sudah Lunas</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="sessionTopic">Materi / Topik yang Diajarkan *</label>
+          <input type="text" id="sessionTopic" placeholder="Contoh: Bab 4 - Partikel は & が / Speaking Practice" required />
+        </div>
+        <div class="form-group">
+          <label for="sessionNotes">Catatan Perkembangan / PR Murid</label>
+          <textarea id="sessionNotes" rows="2" placeholder="Contoh: Lancar kosakata baru, PR latihan halaman 32"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-danger-outline hidden" id="btnDeleteSession">Hapus</button>
+          <button type="submit" class="btn-submit">Simpan Sesi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: TAMBAH / EDIT MURID -->
+  <div class="modal-backdrop" id="modalStudent">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 id="modalStudentTitle">Tambah Murid Baru</h3>
+        <button class="close-btn" data-close="modalStudent">&times;</button>
+      </div>
+      <form id="formStudent">
+        <input type="hidden" id="studentId" />
+        <div class="form-group">
+          <label for="studentName">Nama Murid *</label>
+          <input type="text" id="studentName" placeholder="Contoh: Nadia Putri" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="studentLanguage">Bahasa yang Dipelajari *</label>
+            <select id="studentLanguage" required>
+              <option value="🇬🇧 Bahasa Inggris">🇬🇧 Bahasa Inggris</option>
+              <option value="🇯🇵 Bahasa Jepang">🇯🇵 Bahasa Jepang</option>
+              <option value="🇨🇳 Bahasa Mandarin">🇨🇳 Bahasa Mandarin</option>
+              <option value="🇰🇷 Bahasa Korea">🇰🇷 Bahasa Korea</option>
+              <option value="🇸🇦 Bahasa Arab">🇸🇦 Bahasa Arab</option>
+              <option value="🇩🇪 Bahasa Jerman">🇩🇪 Bahasa Jerman</option>
+              <option value="🇫🇷 Bahasa Prancis">🇫🇷 Bahasa Prancis</option>
+              <option value="🇮🇩 BIPA / Indonesia">🇮🇩 BIPA / Indonesia</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="studentLevel">Level / Target</label>
+            <input type="text" id="studentLevel" placeholder="N5 / IELTS / HSK 2 / SD" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="studentRate">Tarif per Sesi 60m (Rp) *</label>
+            <input type="number" id="studentRate" min="0" step="5000" placeholder="100000" required />
+          </div>
+          <div class="form-group">
+            <label for="studentPhone">No. WhatsApp (Opsional)</label>
+            <input type="tel" id="studentPhone" placeholder="0812xxxx" />
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-danger-outline hidden" id="btnDeleteStudent">Hapus</button>
+          <button type="submit" class="btn-submit">Simpan Murid</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: PENGATURAN & BACKUP DATA -->
+  <div class="modal-backdrop" id="modalSettings">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3>Data & Pengaturan</h3>
+        <button class="close-btn" data-close="modalSettings">&times;</button>
+      </div>
+      <div class="settings-body">
+        <p class="settings-note">Semua data tersimpan otomatis di memori HP Anda (Offline-First). Anda juga bisa mencadangkan data ke file JSON atau mereset contoh data.</p>
+        <div class="settings-actions">
+          <button class="btn-secondary-action" id="btnExportJson">📥 Unduh Backup Data (.json)</button>
+          <label class="btn-secondary-action file-label">
+            📤 Pulihkan dari File Backup
+            <input type="file" id="inputImportJson" accept=".json" hidden />
+          </label>
+          <button class="btn-danger-outline" id="btnResetDemo">🔄 Reset ke Data Contoh Awal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">Tersimpan!</div>
+
+  <script src="app.js"></script>
+</body>
+  </html>
