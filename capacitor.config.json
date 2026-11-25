@@ -1,6 +1,13 @@
 {
-  "appId": "com.rizqi.rekaptutor",
-  "appName": "Rekap Tutor",
+  "appId": "com.growly.tutorgrow",
+  "appName": "Tutor Grow",
   "webDir": "www",
-  "bundledWebRuntime": false
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "iconColor": "#434786"
+    }
+  }
 }

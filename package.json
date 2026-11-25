@@ -1,16 +1,23 @@
 {
-  "name": "rekap-tutor-bahasa",
-  "version": "1.0.0",
-  "description": "Aplikasi Rekap Mengajar untuk Tutor Bahasa",
+  "name": "tutor-grow",
+  "version": "2.0.0",
+  "description": "Tutor Grow - Language Teaching Journal (Multi-user Online App with Supabase)",
   "private": true,
   "scripts": {
-    "build": "echo 'Static web assets ready in www/'"
+    "prepare-vendor": "node scripts/copy-vendor.js",
+    "android:sync": "npm run prepare-vendor && npx cap sync android"
   },
   "dependencies": {
-    "@capacitor/android": "^6.0.0",
-    "@capacitor/core": "^6.0.0"
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/filesystem": "^6.0.2",
+    "@capacitor/local-notifications": "^6.1.1",
+    "@capacitor/share": "^6.0.3",
+    "@supabase/supabase-js": "^2.49.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.2"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.0.0"
+    "@capacitor/cli": "^6.2.0"
   }
 }
