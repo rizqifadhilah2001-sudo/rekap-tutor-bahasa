@@ -1,17 +1,15 @@
 {
-  "name": "Rekap Mengajar Tutor Bahasa",
-  "short_name": "Rekap Tutor",
-  "description": "Aplikasi pencatat murid, sesi mengajar bahasa, dan rekap honor tutor.",
+  "name": "Tutor Grow - Language Teaching Journal",
+  "short_name": "Tutor Grow",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#4f46e5",
-  "orientation": "portrait",
+  "background_color": "#FFFDF7",
+  "theme_color": "#434786",
   "icons": [
     {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]

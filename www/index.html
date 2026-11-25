@@ -2,313 +2,718 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#4f46e5" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Rekap Mengajar - Tutor Bahasa</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/svg+xml" href="icon.svg" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#434786" />
+  <title>Tutor Grow — Language Teaching Journal</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./logo.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <!-- Top Header -->
-    <header class="app-header">
-      <div class="header-top">
-        <div class="brand">
-          <div class="brand-logo">A文</div>
-          <div>
-            <h1 class="brand-title">Rekap Tutor</h1>
-            <p class="brand-subtitle" id="currentDateText">Jurnal & Honor Mengajar Bahasa</p>
-          </div>
-        </div>
-        <button class="icon-btn" id="btnSettings" title="Backup / Pengaturan Data" aria-label="Pengaturan Data">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
-          </svg>
-        </button>
-      </div>
+  <div id="loadingBar" class="loading-bar hidden"></div>
 
-      <!-- Month Filter Selector -->
-      <div class="month-bar">
-        <button class="month-nav-btn" id="prevMonthBtn" aria-label="Bulan Sebelumnya">&#8249;</button>
-        <div class="month-label" id="activeMonthLabel">November 2026</div>
-        <button class="month-nav-btn" id="nextMonthBtn" aria-label="Bulan Berikutnya">&#8250;</button>
-      </div>
-    </header>
-
-    <!-- Main Scrollable Content -->
-    <main class="app-content">
-      <!-- TAB 1: BERANDA / RINGKASAN -->
-      <section class="tab-view active" id="view-dashboard">
-        <div class="hero-card">
-          <div class="hero-top">
-            <div>
-              <span class="hero-caption">Total Honor Bulan Ini</span>
-              <h2 class="hero-amount" id="statTotalFee">Rp 0</h2>
-            </div>
-            <span class="badge-pill" id="statSessionsCount">0 Sesi</span>
-          </div>
-          <div class="hero-split">
-            <div class="split-item paid">
-              <span class="split-dot"></span>
-              <div>
-                <small>Sudah Lunas</small>
-                <strong id="statPaidFee">Rp 0</strong>
-              </div>
-            </div>
-            <div class="split-item unpaid">
-              <span class="split-dot"></span>
-              <div>
-                <small>Belum Dibayar</small>
-                <strong id="statUnpaidFee">Rp 0</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="stats-grid">
-          <div class="mini-stat-card">
-            <span class="mini-icon">⏱️</span>
-            <div>
-              <strong id="statTotalHours">0 Jam</strong>
-              <small>Total Durasi</small>
-            </div>
-          </div>
-          <div class="mini-stat-card">
-            <span class="mini-icon">👩‍🎓</span>
-            <div>
-              <strong id="statActiveStudents">0 Murid</strong>
-              <small>Terdaftar</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="quick-actions">
-          <button class="btn-primary-action" id="btnQuickAddSession">
-            <span>＋ Catat Sesi Mengajar</span>
-          </button>
-          <button class="btn-secondary-action" id="btnQuickAddStudent">
-            <span>＋ Murid Baru</span>
-          </button>
-        </div>
-
-        <div class="section-header">
-          <h3>Sesi Mengajar Terbaru</h3>
-          <button class="link-btn" data-goto="sessions">Lihat Semua</button>
-        </div>
-        <div id="recentSessionsList" class="card-list"></div>
-      </section>
-
-      <!-- TAB 2: SESI MENGAJAR -->
-      <section class="tab-view" id="view-sessions">
-        <div class="toolbar">
-          <div class="filter-chips" id="sessionStatusFilter">
-            <button class="chip active" data-filter="all">Semua</button>
-            <button class="chip" data-filter="unpaid">Belum Dibayar</button>
-            <button class="chip" data-filter="paid">Sudah Lunas</button>
-          </div>
-          <select id="sessionStudentFilter" class="select-compact">
-            <option value="all">Semua Murid</option>
+  <div class="app-container">
+    <!-- ==================== AUTH SCREEN ==================== -->
+    <section id="authScreen" class="auth-screen">
+      <div class="auth-top">
+        <div class="auth-lang-bar">
+          <select id="authLangSelect" class="lang-pill-select" aria-label="Language">
+            <option value="id">🇮🇩 Bahasa Indonesia</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="ko">🇰🇷 한국어</option>
+            <option value="zh">🇨🇳 中文</option>
           </select>
         </div>
-        <div id="allSessionsList" class="card-list"></div>
-      </section>
-
-      <!-- TAB 3: DAFTAR MURID -->
-      <section class="tab-view" id="view-students">
-        <div class="toolbar">
-          <input type="search" id="studentSearchInput" class="search-input" placeholder="Cari nama murid atau bahasa..." />
-          <button class="btn-add-inline" id="btnAddStudentTop">＋ Murid</button>
+        <div class="auth-logo-wrap">
+          <img src="./logo.png" alt="Tutor Grow" />
         </div>
-        <div id="studentsList" class="card-list"></div>
-      </section>
-
-      <!-- TAB 4: REKAP HONOR & PEMBAYARAN -->
-      <section class="tab-view" id="view-finance">
-        <div class="finance-banner">
-          <div>
-            <h3>Rekap Honor per Murid</h3>
-            <p>Klik tombol WA / Salin untuk kirim rekap tagihan mengajar ke murid atau wali murid.</p>
-          </div>
-        </div>
-        <div id="financeStudentList" class="card-list"></div>
-      </section>
-    </main>
-
-    <!-- Floating Action Button -->
-    <button class="fab" id="fabAddSession" title="Catat Sesi Mengajar" aria-label="Catat Sesi Mengajar">＋</button>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-      <button class="nav-item active" data-tab="dashboard">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="9" rx="1"/>
-          <rect x="14" y="3" width="7" height="5" rx="1"/>
-          <rect x="14" y="12" width="7" height="9" rx="1"/>
-          <rect x="3" y="16" width="7" height="5" rx="1"/>
-        </svg>
-        <span>Beranda</span>
-      </button>
-      <button class="nav-item" data-tab="sessions">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
-        </svg>
-        <span>Sesi</span>
-      </button>
-      <button class="nav-item" data-tab="students">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-        <span>Murid</span>
-      </button>
-      <button class="nav-item" data-tab="finance">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="5" width="20" height="14" rx="2"/>
-          <line x1="2" y1="10" x2="22" y2="10"/>
-        </svg>
-        <span>Honor</span>
-      </button>
-    </nav>
-  </div>
-
-  <!-- MODAL: CATAT / EDIT SESI MENGAJAR -->
-  <div class="modal-backdrop" id="modalSession">
-    <div class="modal-sheet">
-      <div class="modal-header">
-        <h3 id="modalSessionTitle">Catat Sesi Mengajar</h3>
-        <button class="close-btn" data-close="modalSession">&times;</button>
+        <div class="auth-brand">Tutor Grow</div>
+        <div class="auth-subtitle">Language Teaching Journal</div>
       </div>
-      <form id="formSession">
-        <input type="hidden" id="sessionId" />
-        <div class="form-group">
-          <label for="sessionStudentId">Pilih Murid *</label>
-          <select id="sessionStudentId" required></select>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="sessionDate">Tanggal *</label>
-            <input type="date" id="sessionDate" required />
+
+      <div class="auth-sheet">
+        <h2 id="authTitle" class="auth-heading">Selamat datang!</h2>
+        <p id="authDesc" class="auth-desc">Kelola jadwal, jurnal mengajar & honor dalam satu aplikasi</p>
+
+        <div id="authAlert" class="auth-alert hidden"></div>
+
+        <form id="authForm">
+          <div id="authNameWrap" class="field hidden">
+            <label for="authName" data-i18n="full_name">Nama Lengkap Tutor</label>
+            <input type="text" id="authName" autocomplete="name" placeholder="Sensei / Teacher Name" />
           </div>
-          <div class="form-group">
-            <label for="sessionDuration">Durasi (Menit) *</label>
-            <select id="sessionDuration" required>
-              <option value="30">30 Menit (0.5 Jam)</option>
-              <option value="45">45 Menit</option>
-              <option value="60" selected>60 Menit (1 Jam)</option>
-              <option value="90">90 Menit (1.5 Jam)</option>
-              <option value="120">120 Menit (2 Jam)</option>
-            </select>
+
+          <div class="field">
+            <label for="authEmail" data-i18n="email">Email</label>
+            <input type="email" id="authEmail" required autocomplete="email" placeholder="tutor@email.com" />
+          </div>
+
+          <div class="field">
+            <label for="authPassword" data-i18n="password">Password</label>
+            <div class="input-box">
+              <input type="password" id="authPassword" required minlength="6" autocomplete="current-password" placeholder="••••••••" />
+              <button type="button" id="togglePwBtn" class="eye-btn" aria-label="Show password">👁️</button>
+            </div>
+          </div>
+
+          <div id="authConfirmWrap" class="field hidden">
+            <label for="authPasswordConfirm" data-i18n="confirm_password">Ulangi Password</label>
+            <input type="password" id="authPasswordConfirm" minlength="6" placeholder="••••••••" />
+          </div>
+
+          <div id="forgotRow" style="text-align:right;margin-bottom:16px;">
+            <button type="button" id="forgotPwBtn" class="btn-link" data-i18n="forgot_password">Lupa Password?</button>
+          </div>
+
+          <button type="submit" id="authSubmitBtn" class="btn btn-primary btn-full">Masuk</button>
+        </form>
+
+        <div style="text-align:center;margin-top:20px;font-size:13.5px;color:var(--text-muted);">
+          <span id="authSwitchText">Belum punya akun?</span>
+          <button type="button" id="authSwitchBtn" class="btn-link">Daftar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MAIN APP SHELL ==================== -->
+    <div id="mainApp" class="hidden">
+      <header class="top-header">
+        <div class="top-header-row">
+          <div class="brand-mini">
+            <div class="brand-mini-logo"><img src="./logo.png" alt="Tutor Grow" /></div>
+            <div>
+              <div id="headerPageTitle" class="header-title">Tutor Grow</div>
+              <div id="headerPageSub" class="header-sub">Language Teaching Journal</div>
+            </div>
+          </div>
+          <div id="goalPill" class="goal-pill" title="Set monthly goal">
+            <div id="goalPillText" class="goal-pill-text">Rp0 / Goal</div>
+            <div class="goal-bar-track"><div id="goalBarFill" class="goal-bar-fill" style="width:0%"></div></div>
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="sessionFee">Honor Sesi Ini (Rp) *</label>
-            <input type="number" id="sessionFee" min="0" step="1000" placeholder="100000" required />
+      </header>
+
+      <main class="main-content">
+        <!-- TAB 1: CALENDAR -->
+        <section id="view-calendar" class="tab-view">
+          <div class="card">
+            <div class="cal-header">
+              <button type="button" id="calPrevBtn" class="cal-nav-btn">‹</button>
+              <div id="calMonthLabel" class="cal-month-title">November 2026</div>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <div class="segmented">
+                  <button type="button" id="calModeMonth" class="active" data-i18n="month_view">Bulan</button>
+                  <button type="button" id="calModeWeek" data-i18n="week_view">Minggu</button>
+                </div>
+                <button type="button" id="calNextBtn" class="cal-nav-btn">›</button>
+              </div>
+            </div>
+
+            <div id="calWeekdays" class="cal-weekdays"></div>
+            <div id="calGrid" class="cal-grid"></div>
+
+            <div id="calLegend" class="cal-legend">
+              <span class="legend-item"><span class="cal-dot paid"></span> <span data-i18n="paid_lessons">Sesi Lunas</span></span>
+              <span class="legend-item"><span class="cal-dot unpaid"></span> <span data-i18n="unpaid_lessons">Belum Lunas</span></span>
+              <span class="legend-item"><span class="cal-dot sched"></span> <span data-i18n="scheduled_lessons">Terjadwal</span></span>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="sessionPaid">Status Bayar</label>
-            <select id="sessionPaid">
-              <option value="false">Belum Dibayar</option>
-              <option value="true">Sudah Lunas</option>
-            </select>
+
+          <div id="quickStartCard" class="card hidden"></div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 4px 10px;">
+            <strong id="selectedDateHeading" style="font-family:var(--font-display);font-size:16px;"></strong>
+            <button type="button" id="todayJumpBtn" class="btn-link" style="font-size:12.5px;" data-i18n="today">Hari Ini</button>
           </div>
+          <div id="selectedDateLessons"></div>
+        </section>
+
+        <!-- TAB 2: STUDENTS & GROUPS -->
+        <section id="view-students" class="tab-view hidden">
+          <div class="card" style="padding:12px;">
+            <div class="segmented segmented-full">
+              <button type="button" class="stu-filter active" data-filter="all" data-i18n="tab_all">Semua</button>
+              <button type="button" class="stu-filter" data-filter="students" data-i18n="tab_students">Murid</button>
+              <button type="button" class="stu-filter" data-filter="groups" data-i18n="tab_groups">Grup</button>
+            </div>
+            <div class="search-box" style="margin-bottom:0;">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="studentSearchInput" placeholder="Cari murid, grup, atau bahasa..." />
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-bottom:12px;">
+            <button type="button" id="btnQuickAddStudent" class="btn btn-primary btn-sm" style="flex:1;">+ <span data-i18n="add_student">Tambah Murid</span></button>
+            <button type="button" id="btnQuickAddGroup" class="btn btn-secondary btn-sm" style="flex:1;">+ <span data-i18n="add_group">Tambah Grup</span></button>
+          </div>
+
+          <div id="studentsGroupsList"></div>
+        </section>
+
+        <!-- TAB 3: STATISTICS -->
+        <section id="view-stats" class="tab-view hidden">
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <button type="button" id="statPrevBtn" class="cal-nav-btn">‹</button>
+              <div id="statPeriodLabel" class="cal-month-title">November 2026</div>
+              <button type="button" id="statNextBtn" class="cal-nav-btn">›</button>
+            </div>
+            <div id="statChart" class="chart-wrap"></div>
+            <div class="period-pills" style="margin-top:12px;margin-bottom:0;">
+              <button type="button" class="stat-period-btn" data-period="week" data-i18n="p_week">Minggu</button>
+              <button type="button" class="stat-period-btn active" data-period="month" data-i18n="p_month">Bulan</button>
+              <button type="button" class="stat-period-btn" data-period="3mo" data-i18n="p_3mo">3 Bln</button>
+              <button type="button" class="stat-period-btn" data-period="6mo" data-i18n="p_6mo">6 Bln</button>
+              <button type="button" class="stat-period-btn" data-period="year" data-i18n="p_year">Tahun</button>
+            </div>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label" data-i18n="actual_income">Pendapatan Aktual</div>
+              <div id="statActualIncome" class="kpi-value">Rp0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label" data-i18n="projected_income">Proyeksi Pendapatan</div>
+              <div id="statProjectedIncome" class="kpi-value">Rp0</div>
+              <div id="statDeltaText" class="kpi-delta"></div>
+            </div>
+          </div>
+
+          <div class="card" id="statMetricsCard"></div>
+          <div id="statBreakdownWrap"></div>
+        </section>
+
+        <!-- TAB 4: ACCOUNT & SETTINGS -->
+        <section id="view-account" class="tab-view hidden">
+          <div class="card profile-card">
+            <div id="accountAvatar" class="profile-avatar" title="Change photo">T</div>
+            <input type="file" id="avatarFileInput" accept="image/*" class="hidden" />
+            <div style="flex:1;min-width:0;">
+              <div id="accountName" style="font-family:var(--font-display);font-size:19px;font-weight:900;">Tutor</div>
+              <div id="accountEmail" style="font-size:12.5px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;"></div>
+              <span class="badge badge-paid" style="margin-top:5px;">☁️ Cloud Sync Active</span>
+            </div>
+            <button type="button" id="btnEditProfile" class="cal-nav-btn" title="Edit">✏️</button>
+          </div>
+
+          <div class="card">
+            <div class="menu-row" id="menuOpenSettings">
+              <div class="menu-row-left"><span class="sq-icon" style="background:var(--primary-soft);">⚙️</span> <span data-i18n="settings">Pengaturan</span></div>
+              <div class="menu-row-right">›</div>
+            </div>
+            <div class="menu-row" id="menuOpenWaTemplate">
+              <div class="menu-row-left"><span class="sq-icon" style="background:#E2F7EC;">💬</span> <span data-i18n="wa_template_menu">Template Pesan WhatsApp</span></div>
+              <div class="menu-row-right">›</div>
+            </div>
+            <div class="menu-row" id="menuSyncNow">
+              <div class="menu-row-left"><span class="sq-icon" style="background:var(--info-bg);">🔄</span> <span data-i18n="sync_now">Sinkronkan Cloud Sekarang</span></div>
+              <div class="menu-row-right">›</div>
+            </div>
+            <div class="menu-row" id="menuExportJson">
+              <div class="menu-row-left"><span class="sq-icon" style="background:var(--warning-bg);">📦</span> <span data-i18n="export_json">Ekspor Backup Data (JSON)</span></div>
+              <div class="menu-row-right">›</div>
+            </div>
+          </div>
+
+          <div class="section-label">SECURITY & ACCOUNT</div>
+          <div class="card">
+            <div class="menu-row" id="menuChangePassword">
+              <div class="menu-row-left"><span class="sq-icon" style="background:var(--primary-soft);">🔒</span> <span data-i18n="change_password">Ganti Password</span></div>
+              <div class="menu-row-right">›</div>
+            </div>
+            <div class="menu-row" id="menuSignOut">
+              <div class="menu-row-left" style="color:var(--danger);"><span class="sq-icon" style="background:var(--danger-bg);">🚪</span> <span data-i18n="sign_out">Keluar</span></div>
+              <div class="menu-row-right">›</div>
+            </div>
+            <div class="menu-row" id="menuDeleteAccount">
+              <div class="menu-row-left" style="color:var(--danger);"><span class="sq-icon" style="background:var(--danger-bg);">🗑️</span> <span data-i18n="delete_account">Hapus Akun</span></div>
+              <div class="menu-row-right">›</div>
+            </div>
+          </div>
+
+          <div style="text-align:center;color:var(--text-muted);font-size:12px;margin-top:12px;">
+            <strong>Tutor Grow</strong> · Language Teaching Journal · v2.0.0
+          </div>
+        </section>
+      </main>
+
+      <!-- BOTTOM NAV + CENTRAL FAB -->
+      <nav class="bottom-nav">
+        <button type="button" class="nav-btn active" data-tab="calendar">
+          <span class="nav-ico">📅</span>
+          <span data-i18n="nav_calendar">Kalender</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="students">
+          <span class="nav-ico">🎓</span>
+          <span data-i18n="nav_students">Murid</span>
+        </button>
+        <div class="fab-slot">
+          <button type="button" id="fabMain" class="fab-btn" aria-label="Add">+</button>
         </div>
-        <div class="form-group">
-          <label for="sessionTopic">Materi / Topik yang Diajarkan *</label>
-          <input type="text" id="sessionTopic" placeholder="Contoh: Bab 4 - Partikel は & が / Speaking Practice" required />
-        </div>
-        <div class="form-group">
-          <label for="sessionNotes">Catatan Perkembangan / PR Murid</label>
-          <textarea id="sessionNotes" rows="2" placeholder="Contoh: Lancar kosakata baru, PR latihan halaman 32"></textarea>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn-danger-outline hidden" id="btnDeleteSession">Hapus</button>
-          <button type="submit" class="btn-submit">Simpan Sesi</button>
-        </div>
-      </form>
+        <button type="button" class="nav-btn" data-tab="stats">
+          <span class="nav-ico">📊</span>
+          <span data-i18n="nav_stats">Statistik</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="account">
+          <span class="nav-ico">👤</span>
+          <span data-i18n="nav_account">Akun</span>
+        </button>
+      </nav>
     </div>
   </div>
 
-  <!-- MODAL: TAMBAH / EDIT MURID -->
-  <div class="modal-backdrop" id="modalStudent">
+  <!-- ==================== MODAL: ADD/EDIT LESSON ==================== -->
+  <div id="lessonModal" class="modal-overlay hidden">
     <div class="modal-sheet">
-      <div class="modal-header">
-        <h3 id="modalStudentTitle">Tambah Murid Baru</h3>
-        <button class="close-btn" data-close="modalStudent">&times;</button>
+      <div class="modal-head">
+        <h3 id="lessonModalTitle" data-i18n="add_lesson_here">Tambah Sesi</h3>
+        <button type="button" class="modal-close" data-close="lessonModal">×</button>
       </div>
-      <form id="formStudent">
-        <input type="hidden" id="studentId" />
-        <div class="form-group">
-          <label for="studentName">Nama Murid *</label>
-          <input type="text" id="studentName" placeholder="Contoh: Nadia Putri" required />
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="studentLanguage">Bahasa yang Dipelajari *</label>
-            <select id="studentLanguage" required>
-              <option value="🇬🇧 Bahasa Inggris">🇬🇧 Bahasa Inggris</option>
-              <option value="🇯🇵 Bahasa Jepang">🇯🇵 Bahasa Jepang</option>
-              <option value="🇨🇳 Bahasa Mandarin">🇨🇳 Bahasa Mandarin</option>
-              <option value="🇰🇷 Bahasa Korea">🇰🇷 Bahasa Korea</option>
-              <option value="🇸🇦 Bahasa Arab">🇸🇦 Bahasa Arab</option>
-              <option value="🇩🇪 Bahasa Jerman">🇩🇪 Bahasa Jerman</option>
-              <option value="🇫🇷 Bahasa Prancis">🇫🇷 Bahasa Prancis</option>
-              <option value="🇮🇩 BIPA / Indonesia">🇮🇩 BIPA / Indonesia</option>
+      <div class="modal-body">
+        <form id="lessonForm">
+          <input type="hidden" id="lessonId" />
+
+          <div class="segmented segmented-full">
+            <button type="button" id="lTypeStudent" class="active" data-i18n="lesson_type_student">Privat</button>
+            <button type="button" id="lTypeGroup" data-i18n="lesson_type_group">Kelas Grup</button>
+          </div>
+
+          <div id="lessonStudentWrap" class="field">
+            <label for="lessonStudentId" data-i18n="choose_student">Pilih Murid</label>
+            <select id="lessonStudentId"></select>
+          </div>
+
+          <div id="lessonGroupWrap" class="field hidden">
+            <label for="lessonGroupId" data-i18n="choose_group">Pilih Kelas Grup</label>
+            <select id="lessonGroupId"></select>
+          </div>
+
+          <!-- Another Session Context Banner -->
+          <div id="lessonContextBanner" class="context-card hidden"></div>
+
+          <div class="section-label" data-i18n="schedule_section">Jadwal & Durasi</div>
+          <div class="field">
+            <label for="lessonDate" data-i18n="date">Tanggal</label>
+            <input type="date" id="lessonDate" required />
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label for="lessonStart" data-i18n="start_time">Mulai</label>
+              <input type="time" id="lessonStart" value="16:00" required />
+            </div>
+            <div class="field">
+              <label for="lessonEnd" data-i18n="end_time">Selesai</label>
+              <input type="time" id="lessonEnd" value="17:00" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label data-i18n="duration_min">Durasi (menit)</label>
+            <div class="chip-group" id="durationChips">
+              <button type="button" class="chip" data-dur="30">30m</button>
+              <button type="button" class="chip" data-dur="45">45m</button>
+              <button type="button" class="chip active" data-dur="60">60m</button>
+              <button type="button" class="chip" data-dur="90">90m</button>
+              <button type="button" class="chip" data-dur="120">120m</button>
+              <button type="button" class="chip" data-dur="custom" data-i18n="manual_min">Manual</button>
+            </div>
+            <input type="number" id="lessonDurationManual" class="hidden" min="5" max="600" placeholder="Contoh: 75" style="margin-top:8px;" />
+          </div>
+
+          <!-- Repeat Lesson -->
+          <div id="repeatLessonWrap">
+            <label class="checkbox-row">
+              <input type="checkbox" id="lessonRepeatToggle" />
+              <span data-i18n="repeat_lesson">Ulangi Jadwal Mingguan</span>
+            </label>
+            <div id="repeatWeeksWrap" class="field hidden">
+              <label for="lessonRepeatWeeks" data-i18n="repeat_weeks">Jumlah Minggu</label>
+              <input type="number" id="lessonRepeatWeeks" min="2" max="16" value="4" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="lessonStatus" data-i18n="attendance_status">Status Kehadiran</label>
+            <select id="lessonStatus">
+              <option value="scheduled">Terjadwal</option>
+              <option value="completed">Hadir / Selesai</option>
+              <option value="rescheduled">Izin / Reschedule (Rp 0)</option>
+              <option value="cancelled">Batal (Rp 0)</option>
+              <option value="no_show">Batal Hangus (Tetap Dihitung)</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="studentLevel">Level / Target</label>
-            <input type="text" id="studentLevel" placeholder="N5 / IELTS / HSK 2 / SD" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="studentRate">Tarif per Sesi 60m (Rp) *</label>
-            <input type="number" id="studentRate" min="0" step="5000" placeholder="100000" required />
-          </div>
-          <div class="form-group">
-            <label for="studentPhone">No. WhatsApp (Opsional)</label>
-            <input type="tel" id="studentPhone" placeholder="0812xxxx" />
-          </div>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn-danger-outline hidden" id="btnDeleteStudent">Hapus</button>
-          <button type="submit" class="btn-submit">Simpan Murid</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
-  <!-- MODAL: PENGATURAN & BACKUP DATA -->
-  <div class="modal-backdrop" id="modalSettings">
-    <div class="modal-sheet">
-      <div class="modal-header">
-        <h3>Data & Pengaturan</h3>
-        <button class="close-btn" data-close="modalSettings">&times;</button>
-      </div>
-      <div class="settings-body">
-        <p class="settings-note">Semua data tersimpan otomatis di memori HP Anda (Offline-First). Anda juga bisa mencadangkan data ke file JSON atau mereset contoh data.</p>
-        <div class="settings-actions">
-          <button class="btn-secondary-action" id="btnExportJson">📥 Unduh Backup Data (.json)</button>
-          <label class="btn-secondary-action file-label">
-            📤 Pulihkan dari File Backup
-            <input type="file" id="inputImportJson" accept=".json" hidden />
+          <!-- Group Attendance Checklist -->
+          <div id="groupAttendanceWrap" class="field hidden">
+            <label data-i18n="group_attendance">Absensi Anggota Grup</label>
+            <div id="groupAttendanceList"></div>
+          </div>
+
+          <div class="section-label" data-i18n="fee_section">Biaya & Pembayaran</div>
+          <div id="packageUseWrap" class="hidden">
+            <label class="checkbox-row">
+              <input type="checkbox" id="lessonUsesPackage" />
+              <span id="packageUseLabel" data-i18n="use_package_quota">Potong kuota paket murid</span>
+            </label>
+            <div class="field">
+              <label for="lessonPackageTag" data-i18n="package_tag">Label Paket (untuk Rapor)</label>
+              <input type="text" id="lessonPackageTag" placeholder="Paket 8 Sesi" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="lessonFee" data-i18n="price">Honor / Biaya Sesi</label>
+            <input type="number" id="lessonFee" min="0" step="any" value="0" />
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="lessonPaid" />
+            <span data-i18n="mark_paid">Sudah Dibayar Lunas</span>
           </label>
-          <button class="btn-danger-outline" id="btnResetDemo">🔄 Reset ke Data Contoh Awal</button>
+
+          <div class="section-label" data-i18n="journal_section">Jurnal Mengajar (Rapor)</div>
+          <div class="field">
+            <label for="lessonTopic" data-i18n="topic_label">Materi yang Diajarkan</label>
+            <input type="text" id="lessonTopic" />
+          </div>
+          <div class="field">
+            <label for="lessonProgress" data-i18n="progress_label">Catatan Progres / Evaluasi</label>
+            <textarea id="lessonProgress"></textarea>
+          </div>
+          <div class="field">
+            <label for="lessonHomework" data-i18n="homework_label">PR / Fokus Pertemuan Berikutnya</label>
+            <input type="text" id="lessonHomework" />
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button type="button" id="lessonDeleteBtn" class="btn btn-danger hidden" data-i18n="delete">Hapus</button>
+            <button type="submit" class="btn btn-primary" style="flex:1;" data-i18n="save_lesson">Simpan Sesi</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD/EDIT STUDENT ==================== -->
+  <div id="studentModal" class="modal-overlay hidden">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 id="studentModalTitle" data-i18n="add_student">Tambah Murid</h3>
+        <button type="button" class="modal-close" data-close="studentModal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="studentForm">
+          <input type="hidden" id="stuId" />
+          <div class="field">
+            <label for="stuName" data-i18n="student_name">Nama Murid</label>
+            <input type="text" id="stuName" required />
+          </div>
+          <div class="field">
+            <label for="stuParent" data-i18n="parent_name">Nama Orang Tua / Wali (opsional)</label>
+            <input type="text" id="stuParent" />
+          </div>
+          <div class="field">
+            <label for="stuLang" data-i18n="language_studied">Bahasa yang Dipelajari</label>
+            <select id="stuLang"></select>
+          </div>
+          <div id="stuLangCustomWrap" class="field hidden">
+            <label for="stuLangCustom" data-i18n="custom_language">Ketik Nama Bahasa Lainnya</label>
+            <input type="text" id="stuLangCustom" placeholder="Contoh: Bahasa Sunda / Polandia" />
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label for="stuLevel" data-i18n="level_target">Level / Target</label>
+              <input type="text" id="stuLevel" placeholder="JLPT N4 / IELTS" />
+            </div>
+            <div class="field">
+              <label for="stuPhone" data-i18n="whatsapp_no">Nomor WhatsApp</label>
+              <input type="tel" id="stuPhone" placeholder="628123456789" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="stuBillingType" data-i18n="billing_model">Model Pembayaran</label>
+            <select id="stuBillingType">
+              <option value="per_session">Bayar per Sesi</option>
+              <option value="package">Sistem Paket / Kuota Sesi</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="stuRate" data-i18n="hourly_rate">Tarif per 60 Menit</label>
+            <input type="number" id="stuRate" min="0" step="any" value="100000" />
+          </div>
+
+          <div id="stuPackageFields" class="hidden" style="background:var(--surface-alt);padding:12px;border-radius:14px;margin-bottom:14px;">
+            <div class="field">
+              <label for="stuPkgName" data-i18n="package_name">Nama Paket</label>
+              <input type="text" id="stuPkgName" placeholder="Paket 8 Sesi" />
+            </div>
+            <div class="row-2">
+              <div class="field">
+                <label for="stuPkgTotal" data-i18n="package_total">Jumlah Sesi Paket</label>
+                <input type="number" id="stuPkgTotal" min="1" value="8" />
+              </div>
+              <div class="field">
+                <label for="stuPkgPrice" data-i18n="package_price">Harga Total Paket</label>
+                <input type="number" id="stuPkgPrice" min="0" value="800000" />
+              </div>
+            </div>
+            <label class="checkbox-row" style="margin-bottom:0;background:var(--surface);">
+              <input type="checkbox" id="stuPkgPaid" />
+              <span data-i18n="package_paid_label">Paket sudah dibayar lunas</span>
+            </label>
+          </div>
+
+          <div class="field">
+            <label data-i18n="accent_color">Warna Kartu</label>
+            <div id="stuColorSwatches" class="color-swatches"></div>
+            <input type="hidden" id="stuColor" value="#434786" />
+          </div>
+
+          <div class="field">
+            <label for="stuNotes" data-i18n="notes_general">Catatan / Target Belajar</label>
+            <textarea id="stuNotes"></textarea>
+          </div>
+
+          <div style="display:flex;gap:10px;">
+            <button type="button" id="stuDeleteBtn" class="btn btn-danger hidden" data-i18n="delete">Hapus</button>
+            <button type="submit" class="btn btn-primary" style="flex:1;" data-i18n="save">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD/EDIT GROUP ==================== -->
+  <div id="groupModal" class="modal-overlay hidden">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 id="groupModalTitle" data-i18n="add_group">Tambah Kelas Grup</h3>
+        <button type="button" class="modal-close" data-close="groupModal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="groupForm">
+          <input type="hidden" id="grpId" />
+          <div class="field">
+            <label for="grpName" data-i18n="group_name">Nama Kelas Grup</label>
+            <input type="text" id="grpName" required placeholder="English Club / JLPT N5 Batch A" />
+          </div>
+          <div class="field">
+            <label for="grpLang" data-i18n="language_studied">Bahasa yang Dipelajari</label>
+            <select id="grpLang"></select>
+          </div>
+          <div id="grpLangCustomWrap" class="field hidden">
+            <label for="grpLangCustom" data-i18n="custom_language">Ketik Nama Bahasa Lainnya</label>
+            <input type="text" id="grpLangCustom" />
+          </div>
+          <div class="field">
+            <label for="grpLevel" data-i18n="level_target">Level / Target</label>
+            <input type="text" id="grpLevel" />
+          </div>
+          <div class="field">
+            <label for="grpFeeMode" data-i18n="group_fee_mode">Mode Tarif Grup</label>
+            <select id="grpFeeMode">
+              <option value="flat">Flat / Borongan per Sesi (60 mnt)</option>
+              <option value="per_student">Per Murid Hadir (60 mnt)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="grpRate" data-i18n="price">Tarif</label>
+            <input type="number" id="grpRate" min="0" step="any" value="150000" />
+          </div>
+          <div class="field">
+            <label data-i18n="group_members">Anggota Murid</label>
+            <div id="grpMembersList"></div>
+          </div>
+          <div class="field">
+            <label data-i18n="accent_color">Warna Kartu</label>
+            <div id="grpColorSwatches" class="color-swatches"></div>
+            <input type="hidden" id="grpColor" value="#002CA6" />
+          </div>
+          <div class="field">
+            <label for="grpNotes" data-i18n="notes_general">Catatan</label>
+            <textarea id="grpNotes"></textarea>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button type="button" id="grpDeleteBtn" class="btn btn-danger hidden" data-i18n="delete">Hapus</button>
+            <button type="submit" class="btn btn-primary" style="flex:1;" data-i18n="save">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: STUDENT / GROUP DETAIL ==================== -->
+  <div id="detailModal" class="modal-overlay hidden">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 id="detailModalTitle">Detail</h3>
+        <button type="button" class="modal-close" data-close="detailModal">×</button>
+      </div>
+      <div id="detailModalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: PDF REPORT GENERATOR ==================== -->
+  <div id="pdfModal" class="modal-overlay hidden">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 data-i18n="pdf_title">Buat Rapor Progres PDF</h3>
+        <button type="button" class="modal-close" data-close="pdfModal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="pdfForm">
+          <input type="hidden" id="pdfStudentId" />
+          <div id="pdfStudentBanner" class="context-card"></div>
+
+          <div class="field">
+            <label data-i18n="report_scope">Periode Rapor</label>
+            <div class="segmented segmented-full">
+              <button type="button" id="pdfScopeMonth" class="active" data-i18n="scope_month">Per Bulan</button>
+              <button type="button" id="pdfScopePkg" data-i18n="scope_package">Per Paket</button>
+            </div>
+          </div>
+
+          <div id="pdfMonthWrap" class="field">
+            <label for="pdfMonthInput" data-i18n="select_month">Pilih Bulan</label>
+            <input type="month" id="pdfMonthInput" />
+          </div>
+
+          <div id="pdfPkgWrap" class="field hidden">
+            <label for="pdfPkgSelect" data-i18n="select_package">Pilih Nama Paket</label>
+            <select id="pdfPkgSelect"></select>
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="pdfIncludeFee" checked />
+            <span data-i18n="include_fee_pdf">Sertakan ringkasan biaya / pembayaran</span>
+          </label>
+
+          <div class="field">
+            <label for="pdfEvaluation" data-i18n="tutor_evaluation">Catatan Evaluasi Umum Tutor</label>
+            <textarea id="pdfEvaluation" rows="4"></textarea>
+          </div>
+
+          <button type="submit" id="pdfSubmitBtn" class="btn btn-primary btn-full">📄 <span data-i18n="generate_pdf_btn">Buat & Kirim Rapor PDF</span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: SETTINGS ==================== -->
+  <div id="settingsModal" class="modal-overlay hidden">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 data-i18n="settings">Pengaturan</h3>
+        <button type="button" class="modal-close" data-close="settingsModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label for="setUiLang" data-i18n="ui_language">Bahasa Aplikasi</label>
+          <select id="setUiLang">
+            <option value="id">🇮🇩 Bahasa Indonesia</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="ja">🇯🇵 日本語 (Japanese)</option>
+            <option value="ko">🇰🇷 한국어 (Korean)</option>
+            <option value="zh">🇨🇳 中文 (Mandarin)</option>
+          </select>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label for="setCurrency" data-i18n="currency">Mata Uang</label>
+            <select id="setCurrency"></select>
+          </div>
+          <div class="field">
+            <label for="setFirstDay" data-i18n="first_day_week">Hari Pertama Minggu</label>
+            <select id="setFirstDay">
+              <option value="1">Senin / Monday</option>
+              <option value="0">Minggu / Sunday</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card" style="padding:8px 14px;">
+          <div class="menu-row">
+            <div class="menu-row-left">🌙 <span data-i18n="dark_theme">Tema Gelap (Dark Mode)</span></div>
+            <label class="switch"><input type="checkbox" id="setDarkTheme" /><span class="slider"></span></label>
+          </div>
+          <div class="menu-row">
+            <div class="menu-row-left">🔵 <span data-i18n="payment_dots">Titik Pembayaran di Kalender</span></div>
+            <label class="switch"><input type="checkbox" id="setPaymentDots" /><span class="slider"></span></label>
+          </div>
+          <div class="menu-row">
+            <div class="menu-row-left">🔔 <span data-i18n="lesson_reminders">Notifikasi Pengingat Mengajar</span></div>
+            <label class="switch"><input type="checkbox" id="setReminders" /><span class="slider"></span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="setReminderMin" data-i18n="reminder_time">Waktu Pengingat</label>
+          <div style="display:flex;gap:8px;">
+            <select id="setReminderMin" style="flex:1;">
+              <option value="15">15 min</option>
+              <option value="30">30 min</option>
+              <option value="60">60 min</option>
+            </select>
+            <button type="button" id="btnTestNotif" class="btn btn-secondary btn-sm" data-i18n="test_notif">Tes Notifikasi</button>
+          </div>
+        </div>
+
+        <button type="button" id="btnSaveSettings" class="btn btn-primary btn-full" data-i18n="save">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: WA TEMPLATE EDITOR ==================== -->
+  <div id="waTemplateModal" class="modal-overlay hidden">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 data-i18n="wa_template_menu">Template Pesan WhatsApp</h3>
+        <button type="button" class="modal-close" data-close="waTemplateModal">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:10px;" data-i18n="wa_template_hint">Klik variabel untuk menyisipkan ke template:</p>
+        <div id="waPlaceholderChips" class="chip-group" style="margin-bottom:12px;"></div>
+        <div class="field">
+          <textarea id="waTemplateInput" rows="11" style="font-family:monospace;font-size:12.5px;"></textarea>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button type="button" id="btnResetWaTpl" class="btn btn-secondary" data-i18n="reset_default">Reset Default</button>
+          <button type="button" id="btnSaveWaTpl" class="btn btn-primary" style="flex:1;" data-i18n="save">Simpan</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="toast">Tersimpan!</div>
+  <!-- ==================== MODAL: SIMPLE PROMPT (GOAL / PROFILE / PW) ==================== -->
+  <div id="quickModal" class="modal-overlay hidden">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 id="quickModalTitle">Edit</h3>
+        <button type="button" class="modal-close" data-close="quickModal">×</button>
+      </div>
+      <div id="quickModalBody" class="modal-body"></div>
+    </div>
+  </div>
 
-  <script src="app.js"></script>
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Vendor libraries (bundled locally into www/vendor during CI build, with CDN fallback for browser preview) -->
+  <script src="./vendor/supabase.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js'"></script>
+  <script src="./vendor/html2canvas.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js'"></script>
+  <script src="./vendor/jspdf.umd.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js'"></script>
+
+  <script src="./config.js"></script>
+  <script src="./i18n.js"></script>
+  <script src="./notifications.js"></script>
+  <script src="./pdf-report.js"></script>
+  <script src="./app.js"></script>
 </body>
-  </html>
+</html>
