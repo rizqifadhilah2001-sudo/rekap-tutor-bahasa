@@ -1,57 +1,81 @@
-name: Build Android APK
+name: Build Tutor Grow Android APK
 
 on:
   push:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-apk:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+
     steps:
-      - name: Checkout Source Code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - name: Setup Java JDK 17
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
-      - name: Install Dependencies & Add Android Platform
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Python & Pillow for Android Launcher Icons
+        run: |
+          python3 -m pip install --upgrade pillow
+
+      - name: Install npm dependencies & bundle vendor scripts
         run: |
           npm install
-          npx cap add android
+          npm run prepare-vendor
+
+      - name: Add and sync Capacitor Android project
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+          python3 scripts/generate-android-icons.py
+          npx cap sync android
 
       - name: Build Debug APK
-        working-directory: ./android
+        working-directory: android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Rename APK
+      - name: Prepare APK artifact
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk ./Rekap-Tutor-Bahasa.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk Tutor-Grow-v2.apk
+          ls -lh Tutor-Grow-v2.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Rekap-Tutor-Bahasa-APK
-          path: ./Rekap-Tutor-Bahasa.apk
+          name: Tutor-Grow-v2-APK
+          path: Tutor-Grow-v2.apk
 
-      - name: Create GitHub Release with APK
+      - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
         with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: "Rekap Tutor Bahasa APK v1.0.${{ github.run_number }}"
-          files: ./Rekap-Tutor-Bahasa.apk
-          generate_release_notes: false
-        continue-on-error: true
+          tag_name: v2.0.${{ github.run_number }}
+          name: Tutor Grow v2.0.${{ github.run_number }}
+          body: |
+            **Tutor Grow — Language Teaching Journal (v2.0.${{ github.run_number }})**
+            - Online Multi-User per Tutor (Supabase Auth + Row Level Security)
+            - Growly Brand Kit v2.0 (Warm White Light Mode + Dark Mode, Nunito & Montserrat)
+            - 5-Language UI Switcher (ID, EN, JA, KO, ZH)
+            - Private & Group Classes (Flat or Per-Student Fee), Session Packages, Repeat Weekly Calendar
+            - Another Session Last-Lesson & Homework Context + Full Statistics
+            - Editable WhatsApp Templates + Monthly / Per-Package PDF Progress Reports
+            - Local Android Teaching Reminders + Custom Growly Launcher Icon
+          files: Tutor-Grow-v2.apk
