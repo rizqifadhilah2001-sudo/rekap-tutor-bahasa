@@ -161,3 +161,11 @@ begin
 end;
 $$;
 grant execute on function public.delete_my_account() to authenticated;
+
+-- Explicit table permissions for authenticated role (PostgreSQL 15+ / Supabase)
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete on table public.tutor_profiles to authenticated;
+grant select, insert, update, delete on table public.students to authenticated;
+grant select, insert, update, delete on table public.tutor_groups to authenticated;
+grant select, insert, update, delete on table public.lessons to authenticated;
+grant usage, select on all sequences in schema public to authenticated;
