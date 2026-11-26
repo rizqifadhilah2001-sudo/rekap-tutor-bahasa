@@ -444,7 +444,10 @@
         const { data, error } = await sb.auth.signUp({
           email,
           password,
-          options: { data: { full_name: name || email.split('@')[0] } }
+          options: {
+            emailRedirectTo: CFG.WEB_APP_URL,
+            data: { full_name: name || email.split('@')[0] }
+          }
         });
         if (error) throw error;
         if (data.session) {
@@ -476,7 +479,9 @@
     }
     showLoading(true);
     try {
-      const { error } = await sb.auth.resetPasswordForEmail(email);
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: CFG.WEB_APP_URL
+      });
       if (error) throw error;
       setAuthAlert(window.t('reset_sent'), 'success');
     } catch (err) {
@@ -2391,6 +2396,8 @@
     sb.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
         exitApp();
+      } else if (event === 'PASSWORD_RECOVERY' && session?.user) {
+        enterApp(session.user).then(() => openChangePasswordModal());
       } else if (event === 'SIGNED_IN' && session?.user && !state.user) {
         enterApp(session.user);
       }

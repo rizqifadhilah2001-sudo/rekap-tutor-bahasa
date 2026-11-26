@@ -5,6 +5,7 @@ window.TUTOR_GROW_CONFIG = {
   APP_VERSION: '2.0.0',
   SUPABASE_URL: 'https://qjxjnlyddcrntfxyegew.supabase.co',
   SUPABASE_KEY: 'sb_publishable_5mk0pZDg4ziazMtw6yBdAQ_m_siI4FZ',
+  WEB_APP_URL: 'https://rizqifadhilah2001-sudo.github.io/rekap-tutor-bahasa/',
 
   // Growly Brand Kit v2.0 — Language Visual System
   LANGUAGES: [
