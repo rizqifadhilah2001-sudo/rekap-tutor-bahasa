@@ -27,12 +27,15 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Setup Python & Pillow for Android Launcher Icons
+      - name: Prepare Android SDK licenses & Pillow
         run: |
-          python3 -m pip install --upgrade pillow
+          SDKMANAGER=$(find "${ANDROID_HOME:-/usr/local/lib/android/sdk}" -name sdkmanager 2>/dev/null | head -n 1)
+          echo "ANDROID_HOME=${ANDROID_HOME:-/usr/local/lib/android/sdk}" >> "$GITHUB_ENV"
+          if [ -n "$SDKMANAGER" ]; then
+            echo "Accepting Android SDK licenses via $SDKMANAGER"
+            yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+          fi
+          sudo apt-get update -qq && sudo apt-get install -y -qq python3-pil
 
       - name: Install npm dependencies & bundle vendor scripts
         run: |
