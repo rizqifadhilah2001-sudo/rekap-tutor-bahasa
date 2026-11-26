@@ -26,6 +26,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Bundle vendor scripts into www/vendor
+        run: |
+          npm install
+          npm run prepare-vendor
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload www artifact
